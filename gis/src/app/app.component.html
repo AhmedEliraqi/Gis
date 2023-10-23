@@ -1,0 +1,112 @@
+<div id="view"></div>
+
+<div>
+  <div style="margin-top: 20px;margin-left: 20px;">
+    <button (click)="showPointTable(null, 1, 10)" [class.disabled]="showPoint" style="margin-right: 20px;" type="button"
+      class="btn btn-success">Points</button>
+    <button (click)="showLineTable(null, 1, 10)" [class.disabled]="showLine" style="margin-right: 20px;" type="button"
+      class="btn btn-success">Lines</button>
+    <button (click)="showPolyTable()" [class.disabled]="showPolygon" type="button"
+      class="btn btn-success">Polygons</button>
+      <button (click)="updateTable()" style="margin-left: 30px;" type="button"
+      class="btn btn-warning">Reset</button>
+  </div>
+  <div *ngIf="showPoint" class="point">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+
+          <th scope="col">Created_date</th>
+          <th scope="col">Created_user</th>
+          <th scope="col">Eventtype</th>
+          <th scope="col">Last_edited_date</th>
+          <th scope="col">Last_edited_user</th>
+          <th scope="col">Goto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let geo of geoJsons| paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems: total } ; let i=index "
+          [hidden]="selectedObjectId !== null && geo.attributes.objectid !== selectedObjectId">
+
+          <td>{{geo?.attributes.created_date}}</td>
+          <td>{{geo?.attributes.created_user}}</td>
+          <td>{{geo?.attributes.eventtype}}</td>
+          <td>{{geo?.attributes.last_edited_date
+            }}</td>
+          <td>{{geo?.attributes.last_edited_user}}</td>
+          <td style="cursor: pointer;" (click)="goToPointGeometry(geo?.attributes.objectid)"><mat-icon> place</mat-icon></td>
+
+        </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [length]="total" (page)="pageChange($event)">
+    </mat-paginator>
+  </div>
+
+
+  <div *ngIf="showLine" class="line">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+
+          <th scope="col">Created_date</th>
+          <th scope="col">Created_user</th>
+          <th scope="col">Eventtype</th>
+          <th scope="col">Last_edited_date</th>
+          <th scope="col">Last_edited_user</th>
+          <th scope="col">Goto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let geo of line; let i=index ">
+
+          <td>{{geo?.attributes.created_date}}</td>
+          <td>{{geo?.attributes.created_user}}</td>
+          <td>{{geo?.attributes.symbolid}}</td>
+          <td>{{geo?.attributes.last_edited_date
+            }}</td>
+          <td>{{geo?.attributes.last_edited_user}}</td>
+          <td style="cursor: pointer;" (click)="gotoLineGeomtry(geo?.attributes.objectid)"><mat-icon> place</mat-icon></td>
+
+        </tr>
+      </tbody>
+    </table>
+    <mat-paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [length]="total" >
+    </mat-paginator>
+  </div>
+
+  <div *ngIf="showPolygon" class="polygon">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+
+          <th scope="col">Created_date</th>
+          <th scope="col">Created_user</th>
+          <th scope="col">Eventtype</th>
+          <th scope="col">Last_edited_date</th>
+          <th scope="col">Last_edited_user</th>
+          <th scope="col">Goto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let geo of polygon | paginate: { itemsPerPage: pageSize, currentPage: pageNumber, totalItems: totalItemsCount } ; let i=index ">
+
+          <td>{{geo?.attributes.created_date}}</td>
+          <td>{{geo?.attributes.created_user}}</td>
+          <td>{{geo?.attributes.symbolid}}</td>
+          <td>{{geo?.attributes.last_edited_date
+            }}</td>
+          <td>{{geo?.attributes.last_edited_user}}</td>
+          <td style="cursor: pointer;" (click)="gotoPolygonGeomtry(geo?.attributes.objectid)"><mat-icon> place</mat-icon></td>
+
+        </tr>
+      </tbody>
+    </table>
+    <mat-paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [length]="totalItemsCount"
+      (page)="nextPage($event)">
+    </mat-paginator>
+  </div>
+</div>
